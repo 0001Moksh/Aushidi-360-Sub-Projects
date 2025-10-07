@@ -1,0 +1,6 @@
+# requirements.txt
+flask
+pandas
+pymongo
+google-generativeai
+werkzeug

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medicine Data Processor</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+  /* 🌌 Base Styling */
+  body {
+    background: radial-gradient(circle at top left, #08111f, #0a0f1a 70%);
+    color: #e8f0ff;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    margin: 0;
+  }
+
+  /* 🌐 Main Container */
+  .container {
+    background: rgba(20, 25, 40, 0.95);
+    border-radius: 20px;
+    padding: 50px 60px;
+    box-shadow: 0 0 35px rgba(0, 255, 255, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.03);
+    max-width: 1000px;
+    width: 100%;
+    animation: fadeIn 1.2s ease;
+  }
+
+  /* 🌟 Heading */
+  h1 {
+    font-size: 2.4rem;
+    background: linear-gradient(90deg, #00ffff, #00ff88, #00ffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+    animation: glowText 3s infinite alternate;
+    margin-bottom: 40px;
+  }
+
+  @keyframes glowText {
+    from { text-shadow: 0 0 15px #00ffff88; }
+    to { text-shadow: 0 0 30px #00ff88cc; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 🎛 Buttons */
+  .btn-primary, .btn-secondary {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(45deg, #00ffff, #00ff88);
+    border: none;
+    color: #000;
+    box-shadow: 0 0 12px #00ffff80;
+  }
+
+  .btn-primary:hover {
+    transform: scale(1.05);
+    background: linear-gradient(45deg, #00ff99, #00ffff);
+    box-shadow: 0 0 25px #00ffffcc;
+  }
+
+  .btn-secondary {
+    background: #1a1f2b;
+    color: #00ffff;
+    border: 1px solid #00ffff66;
+  }
+
+  .btn-secondary:hover {
+    background: #00ffff22;
+    box-shadow: 0 0 15px #00ffff66;
+    transform: scale(1.05);
+  }
+
+  /* 🗂 File Input */
+  input[type="file"] {
+    background-color: #111827;
+    border: 1px solid #00ffff33;
+    color: #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    transition: 0.3s;
+  }
+
+  input[type="file"]:hover {
+    border-color: #00ffff;
+    box-shadow: 0 0 12px #00ffff44;
+  }
+
+  /* 📊 Table Styling */
+  table {
+    margin-top: 35px;
+    width: 100%;
+    border-collapse: collapse;
+    background: #121826;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.08);
+  }
+
+  thead th {
+    background: linear-gradient(90deg, #00ffff, #00ff88);
+    color: #000;
+    font-weight: 600;
+    text-align: center;
+    padding: 14px 12px;
+    font-size: 1rem;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #00ffff22;
+    transition: all 0.3s ease;
+  }
+
+  tbody tr:hover {
+    background: rgba(0, 255, 255, 0.08);
+    transform: scale(1.01);
+  }
+
+  tbody td {
+    padding: 12px 15px;
+    text-align: center;
+    color: #e6e6e6;
+    font-size: 0.95rem;
+  }
+
+  /* 📋 List Items */
+  .list-group-item {
+    background: #0e1522;
+    color: #00ffff;
+    border: 1px solid #00ffff33;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    transition: 0.3s ease;
+  }
+
+  .list-group-item:hover {
+    background: #00ffff22;
+    box-shadow: 0 0 10px #00ffff33;
+  }
+
+  /* 🎨 Highlighted Rows (Pandas Styler) */
+  .yellow-row {
+    background-color: #a3ff00aa !important;
+    color: #000 !important;
+    font-weight: 600;
+  }
+
+  .red-row {
+    background-color: #ff2f2faa !important;
+    color: #fff !important;
+    font-weight: 600;
+  }
+
+  /* 🧭 Utility Classes */
+  .text-center { text-align: center; }
+  .mt-2 { margin-top: 10px; }
+  .mt-3 { margin-top: 20px; }
+  .mt-4 { margin-top: 30px; }
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 Medicine Data Processor</h1>
+
+    <form method="post" enctype="multipart/form-data" class="mt-4">
+      <div class="form-group">
+        <input type="file" name="file" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Process File</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="list-group mt-4">
+          {% for message in messages %}
+            <li class="list-group-item">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if table %}
+      <h2 class="mt-5 text-center text-info">Processed Data</h2>
+      <div class="table-responsive mt-3">
+        {{ table | safe }}
+      </div>
+    {% endif %}
+
+    <div class="text-center">
+      <a href="{{ url_for('view') }}" class="btn btn-secondary mt-4">💊 View All Medicines</a>
+    </div>
+  </div>
+</body>
+</html>

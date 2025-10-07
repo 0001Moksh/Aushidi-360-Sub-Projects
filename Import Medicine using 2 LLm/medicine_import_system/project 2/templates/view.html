@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Medicines</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+    body {
+      background-color: #0a0f1a;
+      color: #e0e0e0;
+      font-family: 'Poppins', sans-serif;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      background: linear-gradient(90deg, #00ffff, #00ff88);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glowText 2s infinite alternate;
+    }
+
+    @keyframes glowText {
+      from { text-shadow: 0 0 10px #00ffff; }
+      to { text-shadow: 0 0 25px #00ff88; }
+    }
+
+    table {
+      margin-top: 40px;
+      color: #fff;
+      background: #161b26;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    }
+
+    thead th {
+      background: linear-gradient(45deg, #00ffff, #00ff88);
+      color: #000;
+      font-weight: bold;
+    }
+
+    tbody tr:hover {
+      background: #00ffff22;
+      transition: 0.3s ease;
+      transform: scale(1.01);
+    }
+
+    .btn-secondary {
+      background: #222;
+      color: #00ffff;
+      border: 1px solid #00ffff66;
+      transition: all 0.3s;
+      display: block;
+      margin: 40px auto;
+    }
+
+    .btn-secondary:hover {
+      background: #00ffff22;
+      box-shadow: 0 0 10px #00ffff66;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💊 All Medicines in Database</h1>
+    <div class="table-responsive">
+      {{ table | safe }}
+    </div>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">⬅ Back to Upload</a>
+  </div>
+</body>
+</html>

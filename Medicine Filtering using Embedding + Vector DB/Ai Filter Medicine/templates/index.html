@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NYT Aushadhi 360 — Premium Pharmacy Experience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+   :root {
+  /* Light mode */
+  --bg: #f5f7fa;             /* soft off-white background */
+  --card: #ffffff;           /* pure white card */
+  --text-primary: #0f172a;   /* dark slate */
+  --text-muted: #64748b;     /* muted gray-blue */
+  --accent: #2563eb;         /* royal blue */
+  --accent-hover: #1d4ed8;   /* deep royal blue */
+  --accent-2: #16a34a;       /* emerald green */
+  --accent-2-hover: #15803d; /* deep emerald */
+  --danger: #dc2626;         /* premium red */
+  --glass: rgba(255,255,255,0.7);
+  --border: rgba(226,232,240,0.7);
+  --radius: 20px;            /* smoother rounded corners */
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.07);
+  --shadow-lg: 0 16px 40px rgba(0,0,0,0.1);
+  --transition: all 0.3s ease;
+  color-scheme: light;
+}
+
+body.dark-mode {
+  /* Dark mode */
+  --bg: #0f172a;             /* deep navy */
+  --card: #1e293b;           /* dark slate card */
+  --text-primary: #f8fafc;   /* near white */
+  --text-muted: #94a3b8;     /* cool muted gray */
+  --accent: #3b82f6;         /* soft blue */
+  --accent-hover: #2563eb;   /* strong blue */
+  --accent-2: #22c55e;       /* green */
+  --accent-2-hover: #16a34a; /* darker green */
+  --danger: #ef4444;         /* bright danger red */
+  --glass: rgba(30,41,59,0.6);
+  --border: rgba(51,65,85,0.6);
+  --radius: 20px;
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.2);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.25);
+  --shadow-lg: 0 16px 40px rgba(0,0,0,0.3);
+  --transition: all 0.3s ease;
+  color-scheme: dark;
+}
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 32px;
+      transition: var(--transition);
+      color: var(--text-muted);
+      overflow-x: hidden;
+    }
+
+    /* Page container */
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo {
+      height: 60px;
+      width: 60px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .logo:hover { transform: scale(1.05); }
+    .title {
+      line-height: 1.1;
+    }
+    .title h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.2px;
+    }
+    .title p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      opacity: 0.9;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      background: var(--card);
+      padding: 8px;
+      border-radius: 999px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+    }
+    .search-wrapper:focus-within { box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+    .search-icon {
+      padding: 0 12px;
+      color: var(--text-muted);
+    }
+    .search-input {
+      border: 0;
+      outline: 0;
+      min-width: 320px;
+      font-size: 15px;
+      padding: 12px;
+      background: transparent;
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+    .search-input::placeholder { color: var(--text-muted); opacity: 0.8; }
+    .chip {
+      background: var(--card);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-primary);
+    }
+    .chip:hover { background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.1)); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    .chip:active { transform: scale(0.98); }
+    .filter-select {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-select:focus { box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+
+    /* Main content */
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* Results card */
+    .results-card {
+      background: var(--card);
+      padding: 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+    }
+    .results-card header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .results-meta { color: var(--text-muted); font-size: 14px; font-weight: 500; }
+    .result-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+    }
+
+    /* Medicine item */
+    .med {
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--glass);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: var(--transition);
+      border: 1px solid var(--border);
+    }
+    body.dark-mode .med { background: var(--glass); }
+    .med:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(59,130,246,0.3); }
+    .med .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent-2-hover));
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .med:hover .avatar { transform: rotate(5deg); }
+    .med .content { flex: 1; min-width: 0; }
+    .med h3 { margin: 0; font-size: 16px; color: var(--text-primary); font-weight: 600; }
+    .meta-row { display: flex; gap: 12px; font-size: 13px; color: var(--text-muted); margin-top: 8px; flex-wrap: wrap; }
+    .pill { font-weight: 500; font-size: 12px; padding: 6px 10px; border-radius: 8px; background: rgba(59,130,246,0.1); color: var(--accent); }
+    .price { font-weight: 700; color: var(--accent-2); font-size: 16px; }
+    .actions { display: flex; gap: 10px; align-items: center; margin-top: 12px; }
+    .qty { width: 100px; display: flex; align-items: center; gap: 8px; background: var(--card); border-radius: 10px; padding: 8px; border: 1px solid var(--border); }
+    .qty input { width: 50px; text-align: center; border: 0; background: transparent; font-weight: 600; color: var(--text-primary); }
+    .btn { padding: 10px 16px; border-radius: 10px; border: 0; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); }
+    .btn-primary { background: linear-gradient(90deg, var(--accent), var(--accent-hover)); color: white; box-shadow: var(--shadow-sm); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .btn-ghost { background: transparent; color: var(--accent); border: 1px solid rgba(59,130,246,0.15); }
+    .btn-ghost:hover { background: rgba(59,130,246,0.05); }
+
+    /* Table fallback (hidden on wide) */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      display: none; /* show for smaller widths via media query */
+    }
+    .table th, .table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .table th { background: transparent; font-weight: 600; color: var(--accent); cursor: pointer; }
+    .no-results { text-align: center; padding: 48px 12px; color: var(--danger); font-weight: 600; font-size: 16px; }
+
+    /* Right column - cart & filters */
+    .side {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 32px;
+    }
+    .card {
+      padding: 20px;
+      border-radius: 12px;
+      background: var(--card);
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+    }
+    .card:hover { box-shadow: var(--shadow-lg); }
+    .cart-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .cart-item { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+    .cart-item:last-child { border-bottom: 0; }
+    .cart-empty { color: var(--text-muted); font-size: 14px; text-align: center; padding: 24px 0; }
+
+    /* Modal */
+    .modal-backdrop { position: fixed; inset: 0; display: none; background: rgba(2,6,23,0.6); z-index: 1400; backdrop-filter: blur(4px); transition: opacity 0.3s ease; }
+    .modal { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.95); background: var(--card); padding: 24px; border-radius: 16px; width: min(960px, 90%); box-shadow: var(--shadow-lg); z-index: 1500; display: none; opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
+    .modal.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    .modal h2 { margin: 0 0 12px 0; font-size: 20px; font-weight: 600; color: var(--text-primary); }
+    .modal .desc { color: var(--text-muted); line-height: 1.6; font-size: 15px; }
+
+    /* Loading skeleton */
+    .skeleton { animation: pulse 1.5s infinite; background: linear-gradient(90deg, var(--border), rgba(0,0,0,0.05), var(--border)); height: 16px; border-radius: 8px; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .main { grid-template-columns: 1fr; }
+      .controls { flex-wrap: wrap; gap: 10px; }
+      .search-input { min-width: 200px; }
+      .results-card { order: 2; }
+      .side { order: 1; position: static; }
+    }
+    @media (max-width: 768px) {
+      body { padding: 20px; }
+      .result-grid { grid-template-columns: 1fr; }
+      .table { display: table; }
+      .result-grid { display: none; }
+      .logo { height: 48px; width: 48px; font-size: 20px; border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page" role="main" aria-label="NYT Aushadhi 360">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><i class="fa-solid fa-capsules"></i></div>
+        <div class="title">
+          <h1>NYT Aushadhi 360</h1>
+          <p>Premium Medicine Search • Hinglish Support • Intelligent Suggestions</p>
+        </div>
+      </div>
+
+      <div class="controls" role="region" aria-label="Search and filters">
+        <div class="search-wrapper" title="Search medicines by symptom or name">
+          <i class="fa-solid fa-search search-icon"></i>
+          <input id="search-input" class="search-input" type="search" placeholder="Search e.g. Fever, Paracetamol, khansi..." aria-label="Search medicines" />
+          <button id="search-btn" class="chip" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+
+        <select id="filter-form" class="filter-select" aria-label="Filter by medicine form">
+          <option value="">All Forms</option>
+          <option>Tablet</option><option>Syrup</option><option>Capsule</option><option>Suspension</option>
+          <option>Effervescent Tablet</option><option>Injection</option><option>Cream</option><option>Ointment</option>
+          <option>Eye Drops</option><option>Nasal Spray</option><option>Powder</option><option>Inhaler</option>
+        </select>
+
+        <button id="theme-toggle" class="chip" aria-pressed="false" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+        <button id="export-button" class="chip" style="display:none" title="Export CSV"><i class="fa-solid fa-file-export"></i> Export</button>
+        <button id="open-cart" class="chip" title="Open Cart"><i class="fa-solid fa-shopping-cart"></i> Cart (<span id="cart-count">0</span>)</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <!-- results -->
+      <section class="results-card" aria-live="polite" aria-busy="false">
+        <header>
+          <div>
+            <strong id="results-title">Search results</strong>
+            <div class="results-meta" id="results-meta">Enter a search to show medicines</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <small class="results-meta">Sort by:</small>
+            <button class="chip" id="sort-relevance" data-sort="relevance">Relevance</button>
+            <button class="chip" id="sort-price" data-sort="price">Price</button>
+          </div>
+        </header>
+
+        <div id="skeletons" style="display:none; margin-bottom:12px;">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+            <div style="padding:16px;border-radius:12px"><div class="skeleton" style="height:16px;width:70%"></div><div class="skeleton" style="height:14px;margin-top:10px;width:90%"></div><div class="skeleton" style="height:12px;margin-top:14px;width:50%"></div></div>
+            <div style="padding:16px;border-radius:12px"><div class="skeleton" style="height:16px;width:70%"></div><div class="skeleton" style="height:14px;margin-top:10px;width:90%"></div><div class="skeleton" style="height:12px;margin-top:14px;width:50%"></div></div>
+            <div style="padding:16px;border-radius:12px"><div class="skeleton" style="height:16px;width:70%"></div><div class="skeleton" style="height:14px;margin-top:10px;width:90%"></div><div class="skeleton" style="height:12px;margin-top:14px;width:50%"></div></div>
+          </div>
+        </div>
+
+        <div id="no-results" class="no-results" style="display:none"></div>
+
+        <!-- grid of items -->
+        <div id="result-grid" class="result-grid" role="list" aria-label="Medicines list"></div>
+
+        <!-- table fallback for compact mobile -->
+        <table id="result-table" class="table" aria-label="Search results table" style="display:none">
+          <thead><tr>
+            <th>#</th><th>Batch ID</th><th>Name</th><th>Form</th><th>Price</th><th>Qty</th><th>Action</th>
+          </tr></thead>
+          <tbody id="result-table-body"></tbody>
+        </table>
+      </section>
+
+      <!-- side column -->
+      <aside class="side">
+        <div class="card" role="region" aria-label="Quick suggestions">
+          <strong>Quick Suggestions</strong>
+          <p style="margin:10px 0 16px 0;color:var(--text-muted);font-size:14px">Tap to populate search</p>
+          <div id="suggestions" style="display:flex;gap:10px;flex-wrap:wrap"></div>
+        </div>
+
+        <div class="card" role="region" aria-label="Shopping cart">
+          <div class="cart-head">
+            <strong>Cart</strong>
+            <small id="cart-total-label" style="color:var(--text-muted);font-weight:600">₹0.00</small>
+          </div>
+          <div id="cart-items" style="margin-top:12px;min-height:100px">
+            <div class="cart-empty">Your cart is empty</div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:16px">
+            <button id="checkout" class="btn btn-primary" style="flex:1">Checkout</button>
+            <button id="clear-cart" class="btn btn-ghost" style="flex:0">Clear</button>
+          </div>
+        </div>
+
+        <div class="card" role="region" aria-label="About">
+          <strong>NYT Aushadhi 360</strong>
+          <p style="margin:10px 0 0 0;color:var(--text-muted);font-size:14px">Premium searches with Hinglish support and AI-powered relevance scoring. Integrates seamlessly with your backend endpoint: <code>/search?query=&amp;form_filter=</code></p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div id="modal-backdrop" class="modal-backdrop" tabindex="-1" aria-hidden="true"></div>
+  <div id="detail-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h2 id="modal-title">Medicine Details</h2>
+    <div id="modal-body" class="desc"></div>
+    <div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end">
+      <button id="modal-close" class="btn btn-ghost">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // ====== Config & state ======
+    const suggestions = ["Fever","Headache","Cough","Cold","Pain","Allergy","Paracetamol","Ibuprofen","Antibiotic","Cramps"];
+    const searchInput = document.getElementById('search-input');
+    const suggestionsContainer = document.getElementById('suggestions');
+    const resultGrid = document.getElementById('result-grid');
+    const resultTableBody = document.getElementById('result-table-body');
+    const skeletons = document.getElementById('skeletons');
+    const noResults = document.getElementById('no-results');
+    const exportBtn = document.getElementById('export-button');
+    const filterForm = document.getElementById('filter-form');
+    const resultsMeta = document.getElementById('results-meta');
+    const resultsTitle = document.getElementById('results-title');
+
+    let allResults = [];
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let lastQuery = '';
+    let debounceTimer = null;
+    let currentSort = 'relevance';
+
+    // Utility: escape for JS insertion
+    function esc(s) { if (s == null) return ''; return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    // show suggestions
+    function renderSuggestions() {
+      suggestionsContainer.innerHTML = suggestions.map(s => `<button class="chip" onclick="selectSuggestion('${s.replace(/'/g, "\\'")}')">${s}</button>`).join('');
+    }
+    window.selectSuggestion = (s) => {
+      searchInput.value = s;
+      performSearch();
+    }
+
+    // theme toggle
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+      const dark = document.body.classList.toggle('dark-mode');
+      themeBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      themeBtn.innerHTML = dark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    });
+    // restore theme
+    if (localStorage.getItem('theme') === 'dark' || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.body.classList.add('dark-mode');
+      themeBtn.setAttribute('aria-pressed', 'true');
+      themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+    }
+
+    // cart handling
+    function updateCartUI() {
+      const countEl = document.getElementById('cart-count');
+      const itemsEl = document.getElementById('cart-items');
+      const totalLabel = document.getElementById('cart-total-label');
+
+      if (!cart.length) {
+        itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+        countEl.textContent = '0';
+        totalLabel.textContent = '₹0.00';
+        localStorage.setItem('cart', JSON.stringify(cart));
+        return;
+      }
+      const rows = cart.map(item => `
+        <div class="cart-item" data-batch="${item.batchId}">
+          <div style="min-width:0">
+            <div style="font-weight:600">${esc(item.name)}</div>
+            <div style="color:var(--text-muted);font-size:13px">₹${Number(item.price).toFixed(2)} x ${item.quantity}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+            <div style="font-weight:700;color:var(--accent-2)">₹${(item.price * item.quantity).toFixed(2)}</div>
+            <div style="display:flex;gap:8px">
+              <button class="chip" onclick="changeQty('${item.batchId}', -1)">−</button>
+              <div style="min-width:32px;text-align:center;font-weight:600">${item.quantity}</div>
+              <button class="chip" onclick="changeQty('${item.batchId}', 1)">+</button>
+              <button class="chip" onclick="removeFromCart('${item.batchId}')" style="background:transparent;border:0;color:var(--danger)">✕</button>
+            </div>
+          </div>
+        </div>`).join('');
+      itemsEl.innerHTML = rows;
+      const total = cart.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 0), 0);
+      countEl.textContent = String(cart.reduce((s, i) => s + (Number(i.quantity) || 0), 0));
+      totalLabel.textContent = `₹${total.toFixed(2)}`;
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    function addToCart(batchId, name, price, qty = 1) {
+      const idx = cart.findIndex(c => c.batchId === batchId);
+      if (idx >= 0) { cart[idx].quantity += qty; }
+      else cart.push({ batchId, name, price: Number(price) || 0, quantity: Number(qty) || 1 });
+      updateCartUI();
+      // Feedback: shake cart button
+      const cartBtn = document.getElementById('open-cart');
+      cartBtn.style.animation = 'shake 0.5s';
+      setTimeout(() => cartBtn.style.animation = '', 500);
+    }
+    function removeFromCart(batchId) {
+      cart = cart.filter(i => i.batchId !== batchId);
+      updateCartUI();
+    }
+    function changeQty(batchId, delta) {
+      const idx = cart.findIndex(c => c.batchId === batchId);
+      if (idx < 0) return;
+      cart[idx].quantity = Math.max(1, cart[idx].quantity + delta);
+      updateCartUI();
+    }
+    function clearCart() {
+      cart = [];
+      updateCartUI();
+    }
+    document.getElementById('clear-cart').addEventListener('click', clearCart);
+    document.getElementById('open-cart').addEventListener('click', () => {
+      document.getElementById('cart-items').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    document.getElementById('checkout').addEventListener('click', () => {
+      if (!cart.length) return alert('Your cart is empty!');
+      alert('Proceeding to checkout... (This is a demo)');
+    });
+    updateCartUI();
+
+    // modal
+    const modal = document.getElementById('detail-modal');
+    const backdrop = document.getElementById('modal-backdrop');
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    function openModal(title, html) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-body').innerHTML = html;
+      modal.style.display = 'block';
+      backdrop.style.display = 'block';
+      setTimeout(() => modal.classList.add('show'), 10);
+      backdrop.setAttribute('aria-hidden', 'false');
+    }
+    function closeModal() {
+      modal.classList.remove('show');
+      backdrop.style.display = 'none';
+      setTimeout(() => modal.style.display = 'none', 300);
+      backdrop.setAttribute('aria-hidden', 'true');
+    }
+
+    // debounce search and performSearch
+    document.getElementById('search-btn').addEventListener('click', performSearch);
+    searchInput.addEventListener('input', (e) => {
+      if (searchInput.value.trim() === '') {
+        renderSuggestions();
+      } else {
+        suggestionsContainer.innerHTML = ''; // hide chips
+      }
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(performSearch, 300);
+    });
+    searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { performSearch(); } });
+
+    filterForm.addEventListener('change', performSearch);
+
+    // sort buttons
+    document.getElementById('sort-relevance').addEventListener('click', () => { currentSort = 'relevance'; renderResults(); });
+    document.getElementById('sort-price').addEventListener('click', () => { currentSort = 'price'; renderResults(); });
+
+    // Export CSV
+    exportBtn.addEventListener('click', () => { exportToCSV(allResults); });
+
+    function showLoading(on = true) {
+      skeletons.style.display = on ? 'block' : 'none';
+      resultGrid.style.opacity = on ? 0.7 : 1;
+      const card = document.querySelector('.results-card');
+      card.setAttribute('aria-busy', on ? 'true' : 'false');
+    }
+
+    // performSearch: calls backend endpoint
+    async function performSearch() {
+      const q = searchInput.value.trim();
+      const formFilter = filterForm.value || '';
+      lastQuery = q;
+      if (!q) {
+        resultsMeta.textContent = 'Enter a search to show medicines'; resultGrid.innerHTML = ''; resultTableBody.innerHTML = ''; exportBtn.style.display = 'none'; noResults.style.display = 'none'; return;
+      }
+
+      showLoading(true);
+      resultGrid.innerHTML = ''; resultTableBody.innerHTML = ''; noResults.style.display = 'none';
+      resultsTitle.textContent = `Searching for “${q}”...`;
+
+      try {
+        const resp = await fetch(`/search?query=${encodeURIComponent(q)}&form_filter=${encodeURIComponent(formFilter)}`);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+        if (data.error) throw new Error(data.error);
+
+        allResults = data.results || [];
+        if (!allResults.length) {
+          noResults.style.display = 'block';
+          noResults.textContent = `No relevant medicines for "${q}"${formFilter ? ` (Filter: ${formFilter})` : ''}.`;
+          resultsMeta.textContent = `0 results`;
+          exportBtn.style.display = 'none';
+        } else {
+          resultsMeta.textContent = `${allResults.length} results · Filter: ${formFilter || 'None'}`;
+          exportBtn.style.display = 'inline-block';
+        }
+        renderResults();
+      } catch (err) {
+        console.error('Search error', err);
+        noResults.style.display = 'block';
+        noResults.textContent = `Error: ${err.message}. Try again.`;
+        exportBtn.style.display = 'none';
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    // renderResults: grid & table
+    function renderResults() {
+      let items = [...allResults];
+      if (currentSort === 'price') {
+        items.sort((a, b) => (Number(a.Price_INR) || 0) - (Number(b.Price_INR) || 0));
+      } else if (currentSort === 'relevance') {
+        items.sort((a, b) => (Number(b.relevance_score) || 0) - (Number(a.relevance_score) || 0));
+      }
+
+      resultGrid.innerHTML = items.map((r, idx) => {
+        let cls = '';
+        if (Number(r.relevance_score) >= 2.5) cls = 'keyword-highlight';
+        else if (Number(r.relevance_score) >= 2.0) cls = 'fuzzy-highlight';
+        const name = esc(r['Name of Medicine'] || r.Name || 'Unknown');
+        const desc = esc(r['Description in Hinglish'] || r.Description || '—');
+        const batch = esc(r.Batch_ID || '—');
+        const form = esc(r['Medicine Forms'] || r.Medicine_Forms || '—');
+        const price = Number(r.Price_INR) || 0;
+        const qty = r.Quantity_per_pack || 1;
+        const symptoms = esc(r.Symptoms || r.symptoms || '');
+        return `
+          <article class="med ${cls}" role="listitem" data-batch="${batch}">
+            <div class="avatar">${(name[0] || 'M').toUpperCase()}</div>
+            <div class="content">
+              <h3 title="${name}">${name}</h3>
+              <div class="meta-row">
+                <div class="pill">${form}</div>
+                <div>Batch: <strong>${batch}</strong></div>
+                <div class="price">₹${price.toFixed(2)}</div>
+              </div>
+              <div class="meta-row" style="margin-top:10px">
+                <div style="color:var(--text-muted);font-size:13px">${symptoms}</div>
+              </div>
+
+              <div class="actions">
+                <div class="qty" aria-hidden="true">
+                  <label style="font-size:13px;color:var(--text-muted);margin-right:8px">Qty</label>
+                  <input type="number" min="1" value="${qty}" id="qty-${batch}" />
+                </div>
+                <button class="btn btn-primary" onclick="addToCart('${batch}', '${name.replace(/'/g, "\\'")}', ${price}, Number(document.getElementById('qty-${batch}').value || 1))">Add to Cart</button>
+                <button class="btn btn-ghost" onclick="openDetail('${name.replace(/'/g, "\\'")}', \`${desc.replace(/`/g, '\\`')}\`)">Details</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+      // table fallback
+      resultTableBody.innerHTML = items.map((r, idx) => {
+        const name = esc(r['Name of Medicine'] || r.Name || 'Unknown');
+        const batch = esc(r.Batch_ID || '—'); const form = esc(r['Medicine Forms'] || '—'); const price = Number(r.Price_INR || 0).toFixed(2);
+        return `<tr><td>${idx + 1}</td><td>${batch}</td><td>${name}</td><td>${form}</td><td>₹${price}</td><td>${r.Quantity_per_pack || 1}</td><td><button class="chip" onclick="addToCart('${batch}','${name.replace(/'/g, "\\'")}',${price},1)">Add</button></td></tr>`;
+      }).join('');
+
+      if (allResults.length) {
+        resultsTitle.textContent = `Results for “${lastQuery}”`;
+        resultsMeta.textContent = `${allResults.length} results (sorted by ${currentSort})`;
+      }
+    }
+
+    function openDetail(name, desc) {
+      openModal(name, `<div style="margin-bottom:10px;color:var(--text-muted);font-size:14px">${desc || 'No description available.'}</div>`);
+    }
+
+    // export CSV
+    function exportToCSV(data) {
+      if (!data || !data.length) return alert('No results to export');
+      const headers = ['S.No', 'Batch ID', 'Medicine Name', 'Symptoms', 'Form', 'Price (INR)', 'Pack Quantity', 'Side Effects', 'Description'];
+      const rows = data.map((r, i) => [
+        i + 1,
+        r.Batch_ID || '',
+        r['Name of Medicine'] || r.Name || '',
+        r.Symptoms || '',
+        r['Medicine Forms'] || '',
+        r.Price_INR || '',
+        r.Quantity_per_pack || '',
+        r['Side Effects'] || '',
+        r['Description in Hinglish'] || r.Description || ''
+      ]);
+      const quoted = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','));
+      const csv = [headers.map(h => `"${h.replace(/"/g, '""')}"`).join(','), ...quoted].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'medicine_search_results.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // quick initialize UI
+    renderSuggestions();
+    updateCartUI();
+
+    // Add shake animation
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes shake {
+        0% { transform: translate(1px, 1px) rotate(0deg); }
+        10% { transform: translate(-1px, -2px) rotate(-1deg); }
+        20% { transform: translate(-3px, 0px) rotate(1deg); }
+        30% { transform: translate(3px, 2px) rotate(0deg); }
+        40% { transform: translate(1px, -1px) rotate(1deg); }
+        50% { transform: translate(-1px, 2px) rotate(-1deg); }
+        60% { transform: translate(-3px, 1px) rotate(0deg); }
+        70% { transform: translate(3px, 1px) rotate(-1deg); }
+        80% { transform: translate(-1px, -1px) rotate(1deg); }
+        90% { transform: translate(1px, 2px) rotate(0deg); }
+        100% { transform: translate(1px, -2px) rotate(-1deg); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // make functions global for inline onclick
+    window.addToCart = addToCart;
+    window.openDetail = openDetail;
+    window.changeQty = changeQty;
+    window.removeFromCart = removeFromCart;
+    window.clearCart = clearCart;
+    window.exportToCSV = exportToCSV;
+  </script>
+</body>
+</html>

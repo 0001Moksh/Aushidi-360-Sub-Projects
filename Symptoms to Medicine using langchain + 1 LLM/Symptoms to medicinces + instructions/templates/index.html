@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NYT Aushadhi 360</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #008080; /* Teal for medical theme */
+      --secondary-color: #f0f4f8; /* Light gray-blue */
+      --accent-color: #ff6f61; /* Coral for vibrancy */
+      --text-color: #1a202c; /* Dark gray */
+      --bg-color: #f9fafb; /* Off-white */
+      --card-bg: #ffffff;
+      --error-color: #e53e3e; /* Red for errors */
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    [data-theme="dark"] {
+      --primary-color: #4fd1c5;
+      --secondary-color: #2d3748;
+      --accent-color: #f6877a;
+      --text-color: #e2e8f0;
+      --bg-color: #1a202c;
+      --card-bg: #2d3748;
+      --error-color: #f56565;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      padding: 16px;
+      transition: var(--transition);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .theme-toggle-container {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.2rem);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    input[type="text"] {
+      padding: 12px 16px;
+      width: min(100%, 500px);
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 6px rgba(0, 128, 128, 0.3);
+    }
+
+    input[type="number"] {
+      padding: 8px;
+      width: 70px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--primary-color);
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .btn-search {
+      background: var(--primary-color);
+      color: #fff;
+    }
+
+    .btn-add {
+      background: var(--accent-color);
+      color: #fff;
+    }
+
+    .btn-add:disabled {
+      background: #a0aec0;
+      cursor: not-allowed;
+    }
+
+    .btn-cancel {
+      background: #a0aec0;
+      color: #fff;
+    }
+
+    .btn-theme-toggle {
+      background: var(--secondary-color);
+      color: var(--text-color);
+      padding: 10px;
+      font-size: 1.2rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .btn-trash {
+      background: transparent;
+      color: var(--error-color);
+      font-size: 1.1rem;
+      padding: 8px;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-trash:hover {
+      color: #c53030;
+      transform: none;
+    }
+
+    .cart-count {
+      background: var(--accent-color);
+      color: #fff;
+      border-radius: 50%;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      position: relative;
+      top: -10px;
+      left: -10px;
+    }
+
+    .sample-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .sample-prompt {
+      background: var(--secondary-color);
+      color: var(--text-color);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid var(--primary-color);
+    }
+
+    .sample-prompt:hover {
+      background: var(--primary-color);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    #result {
+      margin-top: 24px;
+      min-height: 100px;
+    }
+
+    .ai-response {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: var(--text-color);
+      text-align: center;
+      padding: 12px;
+      background: var(--secondary-color);
+      border-radius: 8px;
+    }
+
+    .medicine-card {
+      background: var(--card-bg);
+      border-left: 4px solid var(--primary-color);
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .medicine-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .medicine-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: var(--text-color);
+      font-weight: 500;
+    }
+
+    .medicine-card table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .medicine-card th,
+    .medicine-card td {
+      border: 1px solid #e2e8f0;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .medicine-card th {
+      background: var(--secondary-color);
+      font-weight: 500;
+    }
+
+    .instructions {
+      margin-top: 12px;
+      font-style: italic;
+      color: #4a5568;
+      font-size: 0.9rem;
+    }
+
+    .footer-info {
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      text-align: center;
+      padding: 12px;
+      background: var(--secondary-color);
+      border-radius: 8px;
+    }
+
+    .error {
+      color: var(--error-color);
+      text-align: center;
+      font-size: 1rem;
+      padding: 12px;
+    }
+
+    .loading {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 24px;
+      min-height: 80px;
+    }
+
+    .spinner {
+      border: 4px solid #e2e8f0;
+      border-top: 4px solid var(--primary-color);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-step {
+      font-size: 0.9rem;
+      color: var(--text-color);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.5s ease;
+    }
+
+    .loading-step.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .cart-section {
+      margin-top: 24px;
+      padding: 16px;
+      background: var(--secondary-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .cart-header h3 {
+      font-size: 1.2rem;
+      color: var(--text-color);
+    }
+
+    .cart-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .cart-content.open {
+      max-height: 600px;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 0.5fr;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .cart-item-name {
+      font-weight: 500;
+    }
+
+    .cart-item-price {
+      text-align: right;
+    }
+
+    .footer-attribution {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+
+    .footer-attribution a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-attribution a:hover {
+      text-decoration: underline;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 16px;
+        border-radius: 12px;
+      }
+
+      .theme-toggle-container {
+        top: 16px;
+        right: 16px;
+      }
+
+      .input-group {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+      }
+
+      .btn-theme-toggle {
+        width: 40px;
+        height: 40px;
+      }
+
+      .sample-prompt {
+        width: 100%;
+        text-align: center;
+      }
+
+      .medicine-card table {
+        font-size: 0.85rem;
+      }
+
+      .medicine-card th,
+      .medicine-card td {
+        padding: 6px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .cart-section {
+        padding: 12px;
+      }
+
+      .cart-item {
+        grid-template-columns: 1fr 1fr 1fr 0.5fr;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .medicine-card h3 {
+        font-size: 1.1rem;
+      }
+
+      .medicine-card table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .cart-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 4px;
+      }
+
+      .cart-item-price {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <div class="theme-toggle-container">
+      <button class="btn-theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <i class="fas fa-sun" id="themeIcon"></i>
+      </button>
+    </div>
+    <h1>NYT Aushadhi 360</h1>
+    <div class="input-group">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search medicines or symptoms..."
+        aria-label="Search for medicines or symptoms"
+      >
+      <button class="btn-search" onclick="searchMedicine()">Search</button>
+      <button class="btn-cancel" onclick="clearSearch()">Clear</button>
+    </div>
+    <div class="sample-prompts">
+        <button class="sample-prompt" onclick="setPrompt('High Blood Pressure')">High Blood Pressure</button>
+        <button class="sample-prompt" onclick="setPrompt('Diabetes')">Diabetes</button>
+        <button class="sample-prompt" onclick="setPrompt('Cold & Flu')">Cold & Flu</button>
+        <button class="sample-prompt" onclick="setPrompt('Headache')">Headache</button>
+        <button class="sample-prompt" onclick="setPrompt('Fever')">Fever</button>
+        <button class="sample-prompt" onclick="setPrompt('Cough')">Cough</button>
+        <button class="sample-prompt" onclick="setPrompt('Stomach Pain')">Stomach Pain</button>
+        <button class="sample-prompt" onclick="setPrompt('Allergies')">Allergies</button>
+        <button class="sample-prompt" onclick="setPrompt('Joint Pain')">Joint Pain</button>
+        <button class="sample-prompt" onclick="setPrompt('Skin Infection')">Skin Infection</button>
+
+    </div>
+    <div class="cart-section">
+      <div class="cart-header" onclick="toggleCart()" role="button" tabindex="0" aria-label="Toggle cart">
+        <h3>Cart <span id="cartCount" class="cart-count">0</span></h3>
+        <i class="fas fa-chevron-down" id="cartToggleIcon"></i>
+      </div>
+      <div class="cart-content" id="cartContent">
+        <div id="cartItems"></div>
+      </div>
+    </div>
+    <div id="result" role="region" aria-live="polite"></div>
+</div>
+<div class="footer-attribution">
+  Powered by <a href="https://mokshbhardwaj.netlify.app" target="_blank">Moksh Bhardwaj</a>
+</div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let medicines = [];
+    let lastQuery = '';
+
+    // Initialize cart and theme icon
+    try {
+      updateCart();
+      updateThemeIcon();
+    } catch (err) {
+      console.error('Initialization error:', err);
+      document.getElementById('result').innerHTML = '<p class="error">⚠️ Failed to initialize UI. Please refresh the page.</p>';
+    }
+
+    // Debounce function to limit search frequency
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Set sample prompt
+    function setPrompt(prompt) {
+      try {
+        document.getElementById('searchInput').value = prompt;
+        searchMedicine();
+      } catch (err) {
+        console.error('Set prompt error:', err);
+        document.getElementById('result').innerHTML = '<p class="error">⚠️ Failed to set prompt. Please try again.</p>';
+      }
+    }
+
+    // Search medicine
+    const debouncedSearch = debounce(async () => {
+      const query = document.getElementById('searchInput').value.trim();
+      const resultDiv = document.getElementById('result');
+
+      if (!query) {
+        resultDiv.innerHTML = '<p class="error">⚠️ Please enter a medicine or symptom!</p>';
+        return;
+      }
+
+      if (query.length > 100) {
+        resultDiv.innerHTML = '<p class="error">⚠️ Search query is too long (max 100 characters).</p>';
+        return;
+      }
+
+      resultDiv.innerHTML = `
+        <div class="loading">
+          <div class="spinner"></div>
+          <div id="loadingSteps"></div>
+        </div>
+      `;
+
+      const steps = [
+        "Processing query...",
+        "Searching database...",
+        "Analyzing results...",
+        "Generating response..."
+      ];
+
+      const stepsDiv = document.getElementById("loadingSteps");
+      try {
+        for (let step of steps) {
+          const div = document.createElement("div");
+          div.className = "loading-step";
+          div.textContent = step;
+          stepsDiv.appendChild(div);
+          await new Promise(res => setTimeout(res, 800));
+          div.classList.add("show");
+          await new Promise(res => setTimeout(res, 2000));
+          div.classList.remove("show");
+          await new Promise(res => setTimeout(res, 200));
+          div.remove();
+        }
+      } catch (err) {
+        console.error('Loading animation error:', err);
+        resultDiv.innerHTML = '<p class="error">⚠️ Error in loading animation. Please try again.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch('/search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'query=' + encodeURIComponent(query)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server responded with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.error) {
+          resultDiv.innerHTML = `<p class="error">⚠️ ${data.error}</p>`;
+          return;
+        }
+
+        if (!data["AI Response"] || !data["Medicines"]) {
+          resultDiv.innerHTML = '<p class="error">⚠️ Invalid response from server.</p>';
+          return;
+        }
+
+        medicines = data["Medicines"];
+        lastQuery = query;
+        let html = `<div class="ai-response"><b>AI Response:</b> ${data["AI Response"]}</div>`;
+        html += renderMedicines(medicines);
+        html += `<div class="footer-info">
+          <b>Score:</b> ${data["Score"] || 'N/A'}<br>
+          <b>Instructions:</b> ${data["overall instructions"] || 'Follow prescribed usage'}
+        </div>`;
+        resultDiv.innerHTML = html;
+      } catch (err) {
+        console.error("Search error:", err);
+        resultDiv.innerHTML = '<p class="error">⚠️ Server error or network issue. Please check your connection and try again.</p>';
+      }
+    }, 300);
+
+    function searchMedicine() {
+      try {
+        debouncedSearch();
+      } catch (err) {
+        console.error('Search initiation error:', err);
+        document.getElementById('result').innerHTML = '<p class="error">⚠️ Failed to initiate search. Please try again.</p>';
+      }
+    }
+
+    function clearSearch() {
+      try {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('result').innerHTML = '';
+        lastQuery = '';
+        medicines = [];
+        const cartContent = document.getElementById('cartContent');
+        const cartToggleIcon = document.getElementById('cartToggleIcon');
+        cartContent.classList.remove('open');
+        cartToggleIcon.className = 'fas fa-chevron-down';
+      } catch (err) {
+        console.error('Clear UI error:', err);
+        document.getElementById('result').innerHTML = '<p class="error">⚠️ Failed to clear UI. Please refresh the page.</p>';
+      }
+    }
+
+    function renderMedicines(meds) {
+      let html = '';
+      try {
+        meds.forEach((med, index) => {
+          if (!med["S.no"] || !med["Name"] || !med["Price_INR"]) {
+            throw new Error('Invalid medicine data');
+          }
+          const isInCart = cart.some(item => item["S.no"] === med["S.no"]);
+          html += `
+            <div class="medicine-card">
+              <h3>${med["Name"]}</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>S.no</th>
+                    <th>Batch No.</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Pack Size</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>${med["S.no"]}</td>
+                    <td>${med["Batch No."] || 'N/A'}</td>
+                    <td>${med["Description"] || 'No description'}</td>
+                    <td>₹${parseFloat(med["Price_INR"]).toFixed(2)}</td>
+                    <td>${med["Quantity_per_pack"] || 'N/A'}</td>
+                    <td><button class="btn-add" onclick="addToCart(${index})" ${isInCart ? 'disabled' : ''}>Add to Cart</button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="instructions">👉 ${med["Instructions"] || 'Follow prescribed usage'}</div>
+            </div>
+          `;
+        });
+      } catch (err) {
+        console.error('Render medicines error:', err);
+        return '<p class="error">⚠️ Error rendering medicines. Please try again.</p>';
+      }
+      return html;
+    }
+
+    function addToCart(index) {
+      try {
+        if (index < 0 || index >= medicines.length) {
+          throw new Error('Invalid medicine index');
+        }
+        const med = medicines[index];
+        const existingItem = cart.find(item => item["S.no"] === med["S.no"]);
+        if (!existingItem) {
+          cart.push({ ...med, quantity: 1 });
+          localStorage.setItem('cart', JSON.stringify(cart));
+          updateCart();
+          updateAddToCartButtons();
+        }
+      } catch (err) {
+        console.error('Add to cart error:', err);
+        document.getElementById('result').innerHTML = '<p class="error">⚠️ Failed to add item to cart. Please try again.</p>';
+      }
+    }
+
+    function updateCart() {
+      try {
+        const cartItemsDiv = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        cartCount.textContent = cart.length;
+        if (cart.length === 0) {
+          cartItemsDiv.innerHTML = '<p class="error">Cart is empty</p>';
+          return;
+        }
+        let html = '';
+        cart.forEach((item, index) => {
+          const totalPrice = (parseFloat(item["Price_INR"]) * item.quantity).toFixed(2);
+          html += `
+            <div class="cart-item">
+              <span class="cart-item-name">${item["Name"]}</span>
+              <span class="cart-item-price">₹${totalPrice}</span>
+              <input
+                type="number"
+                min="1"
+                value="${item.quantity}"
+                onchange="updateQuantity(${index}, this.value)"
+                aria-label="Quantity for ${item["Name"]}"
+              >
+              <button class="btn-trash" onclick="removeFromCart(${index})" aria-label="Remove ${item["Name"]} from cart">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          `;
+        });
+        cartItemsDiv.innerHTML = html;
+      } catch (err) {
+        console.error('Update cart error:', err);
+        document.getElementById('cartItems').innerHTML = '<p class="error">⚠️ Failed to update cart. Please refresh the page.</p>';
+      }
+    }
+
+    function updateQuantity(index, value) {
+      try {
+        const newQuantity = parseInt(value);
+        if (isNaN(newQuantity) || newQuantity < 1) {
+          throw new Error('Invalid quantity');
+        }
+        cart[index].quantity = newQuantity;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCart();
+      } catch (err) {
+        console.error('Update quantity error:', err);
+        document.getElementById('cartItems').innerHTML = '<p class="error">⚠️ Invalid quantity input. Please enter a number greater than 0.</p>';
+      }
+    }
+
+    function removeFromCart(index) {
+      try {
+        if (index < 0 || index >= cart.length) {
+          throw new Error('Invalid cart index');
+        }
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCart();
+        updateAddToCartButtons();
+      } catch (err) {
+        console.error('Remove from cart error:', err);
+        document.getElementById('cartItems').innerHTML = '<p class="error">⚠️ Failed to remove item from cart. Please try again.</p>';
+      }
+    }
+
+    function updateAddToCartButtons() {
+      try {
+        const buttons = document.querySelectorAll('.btn-add');
+        buttons.forEach((button, index) => {
+          if (index < medicines.length) {
+            const med = medicines[index];
+            const isInCart = cart.some(item => item["S.no"] === med["S.no"]);
+            button.disabled = isInCart;
+          }
+        });
+      } catch (err) {
+        console.error('Update buttons error:', err);
+        document.getElementById('result').innerHTML = '<p class="error">⚠️ Failed to update cart buttons. Please refresh the page.</p>';
+      }
+    }
+
+    function toggleTheme() {
+      try {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+        updateThemeIcon();
+      } catch (err) {
+        console.error('Toggle theme error:', err);
+        document.getElementById('result').innerHTML = '<p class="error">⚠️ Failed to toggle theme. Please refresh the page.</p>';
+      }
+    }
+
+    function updateThemeIcon() {
+      try {
+        const themeIcon = document.getElementById('themeIcon');
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        themeIcon.className = currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+      } catch (err) {
+        console.error('Update theme icon error:', err);
+      }
+    }
+
+    function toggleCart() {
+      try {
+        const cartContent = document.getElementById('cartContent');
+        const cartToggleIcon = document.getElementById('cartToggleIcon');
+        cartContent.classList.toggle('open');
+        cartToggleIcon.className = cartContent.classList.contains('open') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+      } catch (err) {
+        console.error('Toggle cart error:', err);
+        document.getElementById('cartItems').innerHTML = '<p class="error">⚠️ Failed to toggle cart. Please try again.</p>';
+      }
+    }
+
+    // Keyboard accessibility
+    try {
+      document.getElementById('searchInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          searchMedicine();
+        }
+      });
+
+      document.querySelector('.cart-header').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          toggleCart();
+        }
+      });
+
+      document.querySelectorAll('.sample-prompt').forEach(button => {
+        button.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            setPrompt(button.textContent);
+          }
+        });
+      });
+    } catch (err) {
+      console.error('Keyboard accessibility error:', err);
+      document.getElementById('result').innerHTML = '<p class="error">⚠️ Failed to set up keyboard accessibility. Please refresh the page.</p>';
+    }
+  </script>
+</body>
+</html>
